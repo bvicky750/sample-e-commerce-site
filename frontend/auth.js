@@ -23,7 +23,7 @@ document.addEventListener('DOMContentLoaded', () => {
         loginForm.classList.remove('hidden');
     });
 
-    // --- NEW: Registration Handler (sends data to backend) ---
+    // --- Registration Handler (sends data to backend) ---
     registerForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         registerErrorDiv.textContent = '';
@@ -32,7 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = document.getElementById('register-password').value;
 
         try {
-            const res = await fetch('http://localhost:5000/api/users/register', {
+            const res = await fetch('/api/users/register', { // URL updated
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ name, email, password })
@@ -44,14 +44,14 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             alert('Registration successful! Please log in.');
-            showLoginLink.click(); // Switch to the login form
+            showLoginLink.click();
 
         } catch (error) {
             registerErrorDiv.textContent = error.message;
         }
     });
 
-    // --- NEW: Login Handler (sends data to backend) ---
+    // --- Login Handler (sends data to backend) ---
     loginForm.addEventListener('submit', async (e) => {
         e.preventDefault();
         loginErrorDiv.textContent = '';
@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const password = document.getElementById('login-password').value;
 
         try {
-            const res = await fetch('http://localhost:5000/api/users/login', {
+            const res = await fetch('/api/users/login', { // URL updated
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify({ email, password })
@@ -72,11 +72,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const { token, userName } = await res.json();
             
-            // Store the token and user's name from the server
             localStorage.setItem('token', token);
             localStorage.setItem('userName', userName);
 
-            window.location.href = 'index.html'; // Redirect to the store
+            window.location.href = 'index.html';
 
         } catch (error) {
             loginErrorDiv.textContent = error.message;
@@ -84,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
     });
 });
 
-// Helper functions to be used by other scripts
+// Helper functions that will be used by other scripts
 function getToken() {
     return localStorage.getItem('token');
 }
